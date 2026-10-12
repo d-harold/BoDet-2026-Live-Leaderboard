@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>BoDet 2026 Leaderboard</title>
+        <link rel="icon" type="image/png" href="favicon.png">
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    </head>
+
+
+    <body>
+        <header class="head">
+                <img class="logo" src="images/BoDet Logo HQ.png" alt="Battle of Det 520 2026">
+                <h1>BoDet 2026</h1>
+        </header>
+
+<main>
+    <section class="leaderboard">
+        <h2>Current Rankings</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col" class="rank-column">Rank</th>
+                        <th scope="col">Team Name</th>
+                        <th scope="col" class="score-column">Points</th>
+                    </tr>
+                </thead>
+
+<tbody id="leaderboard-data">
+    <tr>
+        <td class="rank-column"><span class="rank-badge first">1</span></td>
+        <td class="team-name">Specialty Papa ROTC</td>
+        <td class="score-column score">...</td>
+    </tr>
+    <tr>
+        <td class="rank-column"><span class="rank-badge second">2</span></td>
+        <td class="team-name">Instagram Iguanas</td>
+        <td class="score-column score">...</td>
+    </tr>
+    <tr>
+        <td class="rank-column"><span class="rank-badge third">3</span></td>
+        <td class="team-name">Special Initiatives Italian Brainrot</td>
+        <td class="score-column score">...</td>
+    </tr>
+    <tr>
+        <td class="rank-column"><span class="rank-badge">4</span></td>
+        <td class="team-name">Recruiting Raptors</td>
+        <td class="score-column score">...</td>
+    </tr>
+    <tr>
+        <td class="rank-column"><span class="rank-badge">5</span></td>
+        <td class="team-name">Morale Menaces</td>
+        <td class="score-column score">...</td>
+    </tr>
+    <tr>
+        <td class="rank-column"><span class="rank-badge">6</span></td>
+        <td class="team-name">Facilities Food Fighters</td>
+        <td class="score-column score">...</td>
+    </tr>
+    <tr>
+        <td class="rank-column"><span class="rank-badge">7</span></td>
+        <td class="team-name">The Seal Force</td>
+        <td class="score-column score">...</td>
+    </tr>
+</tbody>
+            </table>
+        </div>
+
+        <p class="last-updated">Updating scores...</p>
+    </section>
+
+
+</main>
+
+        <footer>Go Instagram Iguanas!!!</footer>
+
+        
+<script>
+const spreadsheetId = "1pjojui9pGkUG6hxb5Ro6pCsSIyUosI0FXOcjTYeQKPk";
+
+const teams = [
+  { name: "Specialty Papa ROTC", sheet: "Spec PA" },
+  { name: "Instagram Iguanas", sheet: "Instagram" },
+  { name: "Special Initiatives Italian Brainrot", sheet: "Spec Initia" },
+  { name: "Recruiting Raptors", sheet: "Recruiting" },
+  { name: "Morale Menaces", sheet: "Morale WR" },
+  { name: "Facilities Food Fighters", sheet: "Facilities" },
+  { name: "The Seal Force", sheet: "Uniforms Seals" }
+];
+
+const leaderboard = document.getElementById("leaderboard-data");
+const status = document.getElementById("last-updated");
+let refreshing = false;
+
+async function readPoints(sheet) {
+  const url =
+    `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?` +
+    new URLSearchParams({
+      sheet,
+      range: "B12",
+      tqx: "out:json"
+    });
+
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Spreadsheet unavailable");
+
+  const text = await response.text();
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  const data = JSON.parse(text.slice(start, end + 1));
+  const value = data.table.rows[0]?.c[0]?.v;
+
+  if (value == null || value === "" || !Number.isFinite(Number(value))) {
+    throw new Error(`Invalid score: ${sheet}!B12`);
+  }
+
+  return Number(value);
+}
+
+async function refreshLeaderboard() {
+  if (refreshing) return;
+  refreshing = true;
+
+  try {
+    const scores = await Promise.all(
+      teams.map(async team => ({
+        ...team,
+        points: await readPoints(team.sheet)
+      }))
+    );
+
+    scores.sort((a, b) => b.points - a.points);
+
+    const rows = scores.map((team, index) => {
+      const rankClass =
+        index === 0 ? " first" :
+        index === 1 ? " second" :
+        index === 2 ? " third" : "";
+
+      const row = document.createElement("tr");
+
+      const rankCell = document.createElement("td");
+      rankCell.className = "rank-column";
+      const badge = document.createElement("span");
+      badge.className = "rank-badge" + rankClass;
+      badge.textContent = index + 1;
+      rankCell.appendChild(badge);
+
+      const nameCell = document.createElement("td");
+      nameCell.className = "team-name";
+      nameCell.textContent = team.name;
+
+      const pointsCell = document.createElement("td");
+      pointsCell.className = "score-column score";
+      pointsCell.textContent = team.points;
+
+      row.append(rankCell, nameCell, pointsCell);
+      return row;
+    });
+
+    leaderboard.replaceChildren(...rows);
+    status.textContent =
+      "Live scores • Last updated " +
+      new Date().toLocaleTimeString();
+  } catch (error) {
+    console.error("Leaderboard update failed:", error);
+    status.textContent =
+      "Unable to refresh scores. Retrying automatically.";
+  } finally {
+    refreshing = false;
+  }
+}
+
+refreshLeaderboard();
+setInterval(refreshLeaderboard, 2000);
+</script>
+
+
+    </body>
+</html>
