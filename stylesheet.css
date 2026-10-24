@@ -114,7 +114,6 @@ th {
 
 tbody tr {
     background-color: #3C2A17;
-    transition: background-color 0.2s ease;
 }
 
 tbody tr:nth-child(even) {
