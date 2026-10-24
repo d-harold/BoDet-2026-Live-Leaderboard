@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.black-ops-one-regular {
+  font-family: "Black Ops One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.staatliches-regular {
+  font-family: "Staatliches", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.logo {
+    height: 12em;
+    width: auto;
+    object-fit: contain;
+    padding: .2em;
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #F7C02E;
+}
+
+h1 {
+    background-color: #F7C02E;
+    color: #B31B1B;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-family: "Black Ops One", system-ui;
+    font-size: 4.5rem;
+}
+
+h2 {
+    color:#F7C02E;
+    font-family: "Staatliches";
+    text-align: center;
+    font-size: 2.5rem;
+    padding: 20px 15px 5px;
+}
+
+body {
+    background-color: #F7C02E;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  /*   background-image: linear-gradient(#040401, #1A0900, #1A0900, #040401); */
+}
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.leaderboard {
+    background-color: #1E1306;
+    color: #FFFFFF;
+    border: 6px solid #A66A24;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.leaderboard-subtitle {
+    color: #B31B1B;
+    font-family: "Staatliches", sans-serif;
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    padding: 5px 15px 25px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: left;
+}
+
+thead {
+    background-color: #B31B1B;
+    color: #FFFFFF;
+}
+
+th {
+    padding: 16px 20px;
+    font-family: "Staatliches", sans-serif;
+    font-size: 1.2rem;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+tbody tr {
+    background-color: #3C2A17;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #513A20;
+}
+
+td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #634628;
+    font-size: 1rem;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.rank-column {
+    width: 100px;
+    text-align: center;
+}
+
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: #3A332A;
+    color: #FFFFFF;
+    font-family: "Staatliches", sans-serif;
+    font-size: 1.25rem;
+}
+
+.rank-badge.first {
+    background-color: #F7C02E;
+    color: #171717;
+}
+
+.rank-badge.second {
+    background-color: #C0C0C0;
+    color: #171717;
+}
+
+.rank-badge.third {
+    background-color: #B87333;
+    color: #FFFFFF;
+}
+
+.team-name {
+    color: #FFFFFF;
+    font-family: "Staatliches", sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.5px;
+}
+
+.score-column {
+    width: 150px;
+    text-align: right;
+}
+
+.score {
+    color: #F7C02E;
+    font-family: "Black Ops One", system-ui;
+    font-size: 1.2rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.last-updated {
+    color: #F7C02E;
+    text-align: center;
+    font-size: 1rem;
+    padding: 18px 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* MOBILE FORMATTING STUFF */
+
+@media (max-width: 600px) {
+    .logo {
+        height: 9em;
+    }
+
+    main {
+        padding: 15px 10px 30px;
+    }
+
+    .leaderboard {
+        border-radius: 8px;
+    }
+
+    .leaderboard h2 {
+        font-size: 2rem;
+    }
+
+    th {
+        font-size: 1rem;
+    }
+
+    th,
+    td {
+        padding: 12px 8px;
+    }
+
+    .rank-column {
+        width: 65px;
+    }
+
+    .score-column {
+        width: 90px;
+    }
+
+    .rank-badge {
+        min-width: 30px;
+        height: 30px;
+    }
+
+    .team-name {
+        font-size: 1.15rem;
+    }
+
+    .score {
+        font-size: 1rem;
+    }
+}
+
+footer {
+    background-image: url("../images/instagradient.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    padding: .5em 0;
+    margin-top: 20px;
+}
+
+html {
+    height: 100%;
+}
+
